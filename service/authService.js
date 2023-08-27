@@ -2,32 +2,25 @@ const jwtUtil = require("../Utils/jwt");
 const userService = require("./userService")
 
 const register = async(userdata)=>{
-    try {
-        let user = await userService.getUser({ email: userdata.email });
-        if (user) throw "User already exists";
-        user = await userService.addUser(userdata);
-        const token = jwtUtil.generateToken({
-          id: user.id,
-          email: user.email,
-        });
-        return {token};
-    } catch (error) {
-        console.error(error);   
-    }
+    let user = await userService.getUser({ email: userdata.email });
+    if (user) throw 'User already exists';
+    user = await userService.addUser(userdata);
+    const token = jwtUtil.generateToken({
+      id: user.id,
+      email: user.email,
+    });
+    return { token };
 }
 
 const login = async(userdata)=>{
-    try {
-      let user = await userService.getUser({ email: userdata.email });
-      if (!user) throw 'User not exists';
-      const token = jwtUtil.generateToken({
-        id: user.id,
-        email: user.email,
-      });
-      return {token};
-    } catch (error) {
-      console.error(error);
-    }
+    let user = await userService.getUser({ email: userdata.email });
+    if (!user) throw 'User not exists';
+    if (user.password !== userdata.password) throw 'Password is incorrect';
+    const token = jwtUtil.generateToken({
+      id: user.id,
+      email: user.email,
+    });
+    return { token };
 }
 
 const accessToken = (token)=>{
