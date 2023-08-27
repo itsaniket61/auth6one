@@ -22,5 +22,5 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build -t auth6one .
-          docker tag my-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/auth6one:latest
+          docker tag auth6one:latest ${{ secrets.DOCKERHUB_USERNAME }}/auth6one:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/auth6one:latest
